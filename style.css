@@ -1,0 +1,18 @@
+#scoreBoard {
+  text-align: center;
+  background-color: gray;
+}
+
+#scoreBoard div {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.container {
+  background-color: aqua;
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}

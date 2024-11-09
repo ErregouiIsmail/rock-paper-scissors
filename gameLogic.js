@@ -1,6 +1,18 @@
-let humanScore = 0;
-let computerScore = 0;
+let humanScoreCount = 0;
+let computerScoreCount = 0;
 let roundCount = 1;
+let humanChoice;
+
+const parent = document.querySelector("#parent");
+const BoardAnoucement = document.querySelector("#BoardAnoucement");
+const roundNumber = document.querySelector("#roundNumber");
+const yourScore = document.querySelector("#yourScore");
+const computerScore = document.querySelector("#computerScore");
+//TEST
+
+roundNumber.textContent = roundCount;
+computerScore.textContent = computerScoreCount;
+yourScore.textContent = humanScoreCount;
 
 function getComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
@@ -20,100 +32,97 @@ function getComputerChoice() {
   return computerChoice;
 }
 
-function getHumanChoice() {
-  let humanChoice = prompt(
-    "Do you wanna pick Rock, Paper or Scissors ?"
-  ).toLowerCase();
-  switch (humanChoice[0]) {
-    case "r":
-      humanChoice = "rock";
-      break;
-    case "p":
-      humanChoice = "paper";
-      break;
-    case "s":
-      humanChoice = "scissors";
-      break;
-  }
-  //   console.log(humanChoice);
-  return humanChoice;
-}
-
 function playRound(computerChoice, humanChoice) {
   let annoucement;
-
+  BoardAnoucement.textContent = "";
   switch (computerChoice) {
     case "rock":
       if (humanChoice === "rock") {
-        annoucement = "Ta3adol a zebi";
+        annoucement = "It's a tie.";
         break;
       } else if (humanChoice === "paper") {
-        humanScore++;
+        humanScoreCount++;
         annoucement = "You have won this round";
         break;
       } else {
-        computerScore++;
-        annoucement = "HIHIHIHIHI";
+        computerScoreCount++;
+        annoucement = "You have lost the round.";
         break;
       }
 
     case "paper":
       if (humanChoice === "paper") {
-        annoucement = "Ta3adol a zebi";
+        annoucement = "It's a tie.";
         break;
       } else if (humanChoice === "scissors") {
-        humanScore++;
+        humanScoreCount++;
         annoucement = "You have won this round";
         break;
       } else {
-        computerScore++;
-        annoucement = "HIHIHIHIHI";
+        computerScoreCount++;
+        annoucement = "You have lost the round.";
         break;
       }
     case "scissors":
       if (humanChoice === "scissors") {
-        annoucement = "Ta3adol a zebi";
+        annoucement = "It's a tie.";
         break;
       } else if (humanChoice === "rock") {
-        humanScore++;
+        humanScoreCount++;
         annoucement = "You have won this round";
         break;
       } else {
-        computerScore++;
-        annoucement = "HIHIHIHIHI";
+        computerScoreCount++;
+        annoucement = "You have lost the round.";
         break;
       }
   }
-  console.log(annoucement);
-  //   console.log(
-  //     "The score is : Computer " + computerScore + " Human " + humanScore
-  //   );
-}
-
-function playGame() {
-  while (roundCount < 6) {
-    console.log("Round: " + roundCount);
-    console.log(
-      "Current score is Computer " + computerScore + " Human " + humanScore
-    );
-    playRound(getComputerChoice(), getHumanChoice());
-    roundCount++;
-  }
-
-  console.log(
-    "The final score is Computer " + computerScore + " Human " + humanScore
-  );
-  let maxScore = Math.max(humanScore, computerScore);
-  switch (maxScore) {
-    case humanScore:
-      console.log("You have won");
-      break;
-    case computerScore:
-      console.log("Chuha a zebi");
-      break;
-    default:
-      console.log("Ta3adol d zeb");
+  if (roundCount != 5) {
+    BoardAnoucement.textContent = annoucement;
+  } else {
+    let maxScore = Math.max(humanScoreCount, computerScoreCount);
+    switch (maxScore) {
+      case humanScoreCount:
+        BoardAnoucement.textContent = "You have won the game.";
+        break;
+      case computerScoreCount:
+        BoardAnoucement.textContent = "You have lost the game.";
+        break;
+      default:
+        BoardAnoucement.textContent = "The game ended on a tie.";
+    }
   }
 }
 
-playGame();
+const play = function (event) {
+  const target = event.target;
+  if (roundCount < 6) {
+    switch (target.id) {
+      case "rock":
+        humanChoice = "rock";
+        break;
+      case "paper":
+        humanChoice = "paper";
+        break;
+      case "scissors":
+        humanChoice = "scissors";
+        break;
+    }
+    playRound(getComputerChoice(), humanChoice);
+    roundNumber.textContent = roundCount++;
+    computerScore.textContent = computerScoreCount;
+    yourScore.textContent = humanScoreCount;
+  }
+};
+
+parent.addEventListener("click", play);
+
+startOver.addEventListener("click", () => {
+  humanScoreCount = 0;
+  computerScoreCount = 0;
+  roundCount = 1;
+  roundNumber.textContent = roundCount;
+  computerScore.textContent = computerScoreCount;
+  yourScore.textContent = humanScoreCount;
+  BoardAnoucement.textContent = "";
+});
